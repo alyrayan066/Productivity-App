@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NEXUS">
+<meta name="theme-color" content="#0d0d0f">
+<title>NEXUS — Productivity Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+:root {
+–bg: #0d0d0f;
+–bg2: #141417;
+–bg3: #1a1a1f;
+–bg4: #222228;
+–border: rgba(255,255,255,0.07);
+–border2: rgba(255,255,255,0.12);
+–text: #f0ede8;
+–text2: #8a8794;
+–text3: #5a5760;
+–accent: #c8f560;
+–accent2: #8b5cf6;
+–accent3: #f97316;
+–accent4: #06b6d4;
+–danger: #ef4444;
+–success: #22c55e;
+–warning: #f59e0b;
+–safe-top: env(safe-area-inset-top, 0px);
+–safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html, body {
+height: 100%;
+width: 100%;
+overflow: hidden;
+background: var(–bg);
+color: var(–text);
+font-family: ‘Syne’, sans-serif;
+}
+
+body {
+display: flex;
+flex-direction: column;
+padding-top: var(–safe-top);
+padding-bottom: var(–safe-bottom);
+}
+
+/* TOP BAR */
+.topbar {
+display: flex;
+align-items: center;
+padding: 14px 16px 12px;
+border-bottom: 1px solid var(–border);
+background: var(–bg);
+flex-shrink: 0;
+gap: 10px;
+}
+
+.logo-text { font-size: 18px; font-weight: 800; color: var(–accent); letter-spacing: -0.5px; }
+.page-title { font-size: 16px; font-weight: 700; flex: 1; }
+
+.topbar-btn {
+background: var(–bg3);
+border: 1px solid var(–border2);
+color: var(–text);
+padding: 7px 12px;
+border-radius: 8px;
+cursor: pointer;
+font-size: 12px;
+font-family: ‘Syne’, sans-serif;
+font-weight: 600;
+display: flex;
+align-items: center;
+gap: 5px;
+transition: all 0.15s;
+white-space: nowrap;
+}
+
+.topbar-btn.primary {
+background: var(–accent);
+color: #0d0d0f;
+border-color: transparent;
+font-weight: 700;
+}
+
+/* CONTENT */
+.content {
+flex: 1;
+overflow-y: auto;
+-webkit-overflow-scrolling: touch;
+padding: 16px;
+padding-bottom: 80px;
+}
+
+.page { display: none; }
+.page.active { display: block; }
+
+/* BOTTOM NAV */
+.bottom-nav {
+display: flex;
+border-top: 1px solid var(–border);
+background: var(–bg2);
+flex-shrink: 0;
+}
+
+.nav-item {
+flex: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 10px 4px 8px;
+cursor: pointer;
+color: var(–text3);
+transition: all 0.15s;
+font-size: 10px;
+font-weight: 600;
+gap: 3px;
+position: relative;
+border: none;
+background: none;
+font-family: ‘Syne’, sans-serif;
+}
+
+.nav-item i { font-size: 22px; }
+.nav-item.active { color: var(–accent); }
+
+.nav-badge {
+position: absolute;
+top: 6px;
+right: calc(50% - 16px);
+background: var(–danger);
+color: white;
+font-size: 9px;
+font-weight: 700;
+padding: 1px 5px;
+border-radius: 20px;
+font-family: ‘DM Mono’, monospace;
+min-width: 16px;
+text-align: center;
+}
+
+/* STATS */
+.stats-row {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 8px;
+margin-bottom: 16px;
+}
+
+.stat-card {
+background: var(–bg2);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 12px;
+text-align: center;
+}
+
+.stat-num { font-size: 26px; font-weight: 800; color: var(–accent); font-family: ‘DM Mono’, monospace; }
+.stat-lbl { font-size: 10px; color: var(–text3); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+/* TASKS */
+.input-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+
+.task-input {
+flex: 1;
+min-width: 0;
+background: var(–bg2);
+border: 1px solid var(–border2);
+border-radius: 10px;
+padding: 12px 14px;
+color: var(–text);
+font-family: ‘Syne’, sans-serif;
+font-size: 15px;
+outline: none;
+}
+
+.task-input:focus { border-color: var(–accent); }
+
+.priority-sel {
+background: var(–bg2);
+border: 1px solid var(–border2);
+border-radius: 10px;
+padding: 12px 10px;
+color: var(–text2);
+font-family: ‘Syne’, sans-serif;
+font-size: 13px;
+outline: none;
+}
+
+.add-btn {
+background: var(–accent);
+color: #0d0d0f;
+border: none;
+border-radius: 10px;
+padding: 12px 18px;
+cursor: pointer;
+font-family: ‘Syne’, sans-serif;
+font-weight: 700;
+font-size: 14px;
+}
+
+.filter-row { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 2px; }
+.filter-row::-webkit-scrollbar { display: none; }
+
+.filter-chip {
+padding: 5px 14px;
+border-radius: 20px;
+font-size: 12px;
+font-weight: 600;
+cursor: pointer;
+border: 1px solid var(–border);
+color: var(–text2);
+background: transparent;
+white-space: nowrap;
+font-family: ‘Syne’, sans-serif;
+}
+
+.filter-chip.active { background: var(–bg3); color: var(–text); border-color: var(–border2); }
+
+.task-list { display: flex; flex-direction: column; gap: 6px; }
+
+.task-item {
+background: var(–bg2);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 14px;
+display: flex;
+align-items: center;
+gap: 12px;
+animation: slideIn 0.2s ease;
+}
+
+@keyframes slideIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+
+.task-check {
+width: 22px; height: 22px;
+border: 1.5px solid var(–border2);
+border-radius: 6px;
+flex-shrink: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+}
+
+.task-check.done { background: var(–accent); border-color: var(–accent); }
+.task-check.done::after { content: ‘✓’; font-size: 13px; color: #0d0d0f; font-weight: 700; }
+.task-text { flex: 1; font-size: 14px; line-height: 1.4; }
+.task-text.done { text-decoration: line-through; color: var(–text3); }
+.priority-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.p-high { background: var(–danger); }
+.p-medium { background: var(–warning); }
+.p-low { background: var(–success); }
+.task-del { background: none; border: none; color: var(–text3); cursor: pointer; font-size: 18px; padding: 2px 6px; }
+
+.empty-state { text-align: center; padding: 48px 24px; color: var(–text3); font-size: 14px; }
+
+/* HABITS */
+.habits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+
+.habit-card {
+background: var(–bg2);
+border: 1px solid var(–border);
+border-radius: 14px;
+padding: 16px 14px;
+cursor: pointer;
+transition: all 0.2s;
+position: relative;
+overflow: hidden;
+}
+
+.habit-card::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0;
+height: 3px; width: 100%;
+background: var(–habit-color, var(–accent));
+transform: scaleX(0);
+transition: transform 0.3s;
+}
+
+.habit-card.checked::before { transform: scaleX(1); }
+.habit-card.checked { border-color: rgba(200,245,96,0.2); background: var(–bg3); }
+
+.habit-emoji { font-size: 26px; margin-bottom: 8px; }
+.habit-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.habit-streak { font-size: 11px; color: var(–text2); font-family: ‘DM Mono’, monospace; }
+.habit-streak span { color: var(–accent); font-weight: 600; }
+
+.streak-bar { display: flex; gap: 3px; margin-top: 10px; }
+.streak-dot { width: 9px; height: 9px; border-radius: 2px; background: var(–border); }
+.streak-dot.done { background: var(–accent); }
+
+/* SCHEDULE */
+.day-tabs { display: flex; gap: 6px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
+.day-tabs::-webkit-scrollbar { display: none; }
+
+.day-tab {
+padding: 8px 14px;
+border-radius: 8px;
+font-size: 12px;
+font-weight: 600;
+cursor: pointer;
+border: 1px solid var(–border);
+color: var(–text2);
+background: transparent;
+white-space: nowrap;
+font-family: ‘Syne’, sans-serif;
+}
+
+.day-tab.active { background: var(–accent); color: #0d0d0f; border-color: transparent; }
+
+.time-grid { display: flex; flex-direction: column; gap: 4px; }
+
+.time-slot { display: flex; align-items: stretch; gap: 10px; min-height: 52px; }
+
+.time-label {
+width: 40px;
+font-size: 10px;
+color: var(–text3);
+font-family: ‘DM Mono’, monospace;
+padding-top: 16px;
+flex-shrink: 0;
+text-align: right;
+}
+
+.time-content {
+flex: 1;
+border-left: 1px solid var(–border);
+padding: 4px 0 4px 12px;
+min-height: 52px;
+}
+
+.event-block {
+background: var(–bg3);
+border: 1px solid var(–border2);
+border-left: 3px solid var(–event-color, var(–accent2));
+border-radius: 8px;
+padding: 10px 12px;
+}
+
+.event-title { font-size: 14px; font-weight: 600; }
+.event-time-label { font-size: 10px; color: var(–text2); font-family: ‘DM Mono’, monospace; margin-top: 2px; }
+
+/* JOURNAL */
+.journal-date-lbl { font-size: 11px; color: var(–text3); font-family: ‘DM Mono’, monospace; letter-spacing: 1px; margin-bottom: 8px; }
+
+.journal-title-input {
+background: none;
+border: none;
+border-bottom: 1px solid var(–border);
+color: var(–text);
+font-family: ‘Syne’, sans-serif;
+font-size: 22px;
+font-weight: 700;
+width: 100%;
+outline: none;
+padding-bottom: 12px;
+margin-bottom: 16px;
+}
+
+.journal-textarea {
+background: none;
+border: none;
+color: var(–text2);
+font-family: ‘DM Mono’, monospace;
+font-size: 14px;
+line-height: 1.8;
+width: 100%;
+min-height: 240px;
+outline: none;
+resize: none;
+}
+
+.journal-textarea::placeholder { color: var(–text3); }
+
+.mood-row { display: flex; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(–border); align-items: center; flex-wrap: wrap; }
+.mood-label { font-size: 12px; color: var(–text3); }
+
+.mood-btn {
+font-size: 22px;
+cursor: pointer;
+padding: 4px 8px;
+border-radius: 8px;
+border: 1px solid transparent;
+background: none;
+}
+
+.mood-btn.active { background: var(–bg3); border-color: var(–border2); }
+
+.save-journal-btn {
+margin-top: 16px;
+width: 100%;
+background: var(–accent);
+color: #0d0d0f;
+border: none;
+border-radius: 10px;
+padding: 13px;
+cursor: pointer;
+font-family: ‘Syne’, sans-serif;
+font-weight: 700;
+font-size: 15px;
+}
+
+.section-label {
+font-size: 10px;
+color: var(–text3);
+letter-spacing: 2px;
+text-transform: uppercase;
+font-family: ‘DM Mono’, monospace;
+margin: 16px 0 10px;
+}
+
+.prompt-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 20px; }
+
+.prompt-chip {
+background: var(–bg2);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 10px 14px;
+font-size: 13px;
+color: var(–text2);
+cursor: pointer;
+line-height: 1.4;
+}
+
+/* AI DRAWER */
+.ai-overlay {
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.7);
+z-index: 1000;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.25s;
+}
+
+.ai-overlay.open { opacity: 1; pointer-events: all; }
+
+.ai-drawer {
+position: fixed;
+bottom: 0; left: 0; right: 0;
+background: var(–bg2);
+border-top: 1px solid var(–border2);
+border-radius: 20px 20px 0 0;
+z-index: 1001;
+display: flex;
+flex-direction: column;
+max-height: 80vh;
+transform: translateY(100%);
+transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+padding-bottom: var(–safe-bottom);
+}
+
+.ai-overlay.open .ai-drawer { transform: translateY(0); }
+
+.ai-handle { width: 36px; height: 4px; background: var(–border2); border-radius: 2px; margin: 12px auto 0; }
+
+.ai-header {
+display: flex;
+align-items: center;
+padding: 12px 16px;
+gap: 10px;
+border-bottom: 1px solid var(–border);
+}
+
+.ai-dot { width: 8px; height: 8px; border-radius: 50%; background: var(–accent); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+.ai-title { font-size: 15px; font-weight: 700; flex: 1; }
+
+.ai-close {
+background: none;
+border: none;
+color: var(–text2);
+font-size: 20px;
+cursor: pointer;
+padding: 0 4px;
+}
+
+.ai-messages {
+flex: 1;
+overflow-y: auto;
+-webkit-overflow-scrolling: touch;
+padding: 16px;
+display: flex;
+flex-direction: column;
+gap: 10px;
+min-height: 180px;
+}
+
+.ai-msg {
+padding: 12px 14px;
+border-radius: 12px;
+font-size: 14px;
+line-height: 1.6;
+max-width: 88%;
+animation: fadeUp 0.2s ease;
+}
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+.ai-msg.user { background: var(–bg4); border: 1px solid var(–border2); align-self: flex-end; color: var(–text); }
+.ai-msg.assistant { background: rgba(200,245,96,0.08); border: 1px solid rgba(200,245,96,0.15); color: var(–text); align-self: flex-start; }
+.ai-msg.loading { color: var(–text3); font-family: ‘DM Mono’, monospace; align-self: flex-start; }
+
+.ai-input-row {
+padding: 12px 16px;
+border-top: 1px solid var(–border);
+display: flex;
+gap: 8px;
+}
+
+.ai-input {
+flex: 1;
+background: var(–bg3);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 11px 14px;
+color: var(–text);
+font-family: ‘Syne’, sans-serif;
+font-size: 15px;
+outline: none;
+}
+
+.ai-input:focus { border-color: var(–accent); }
+
+.ai-send {
+background: var(–accent);
+color: #0d0d0f;
+border: none;
+border-radius: 10px;
+padding: 11px 18px;
+cursor: pointer;
+font-family: ‘Syne’, sans-serif;
+font-weight: 700;
+font-size: 14px;
+}
+
+/* ADD EVENT MODAL */
+.modal-overlay {
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.7);
+z-index: 1000;
+display: none;
+align-items: flex-end;
+justify-content: center;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal-box {
+background: var(–bg2);
+border: 1px solid var(–border2);
+border-radius: 20px 20px 0 0;
+padding: 24px 20px;
+width: 100%;
+padding-bottom: calc(24px + var(–safe-bottom));
+}
+
+.modal-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+.modal-label { font-size: 11px; color: var(–text3); margin-bottom: 6px; display: block; font-family: ‘DM Mono’, monospace; letter-spacing: 1px; text-transform: uppercase; }
+.modal-field { margin-bottom: 14px; }
+
+.modal-input {
+width: 100%;
+background: var(–bg3);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 12px 14px;
+color: var(–text);
+font-family: ‘Syne’, sans-serif;
+font-size: 15px;
+outline: none;
+}
+
+.modal-input:focus { border-color: var(–accent); }
+
+.modal-actions { display: flex; gap: 8px; margin-top: 16px; }
+
+.modal-cancel {
+flex: 1;
+background: var(–bg3);
+border: 1px solid var(–border);
+color: var(–text2);
+border-radius: 10px;
+padding: 13px;
+cursor: pointer;
+font-family: ‘Syne’, sans-serif;
+font-size: 15px;
+}
+
+.modal-save {
+flex: 1;
+background: var(–accent);
+border: none;
+color: #0d0d0f;
+border-radius: 10px;
+padding: 13px;
+cursor: pointer;
+font-family: ‘Syne’, sans-serif;
+font-size: 15px;
+font-weight: 700;
+}
+</style>
+
+</head>
+<body>
+
+<!-- TOP BAR -->
+
+<div class="topbar">
+  <span class="logo-text">✦</span>
+  <span class="page-title" id="page-title">Tasks</span>
+  <button class="topbar-btn" onclick="openAI()"><i class="ti ti-sparkles"></i> AI</button>
+</div>
+
+<!-- CONTENT -->
+
+<div class="content">
+
+  <!-- TASKS -->
+
+  <div class="page active" id="page-tasks">
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-lbl">Total</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-done">0</div><div class="stat-lbl">Done</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-pending">0</div><div class="stat-lbl">Pending</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-high">0</div><div class="stat-lbl">High Priority</div></div>
+    </div>
+
+```
+<div class="input-row">
+  <input class="task-input" id="task-input" placeholder="Add a new task..." style="min-width:0">
+  <select class="priority-sel" id="priority-sel">
+    <option value="high">🔴</option>
+    <option value="medium" selected>🟡</option>
+    <option value="low">🟢</option>
+  </select>
+  <button class="add-btn" onclick="addTask()">Add</button>
+</div>
+
+<div class="filter-row">
+  <button class="filter-chip active" onclick="filterTasks('all',this)">All</button>
+  <button class="filter-chip" onclick="filterTasks('active',this)">Active</button>
+  <button class="filter-chip" onclick="filterTasks('done',this)">Done</button>
+  <button class="filter-chip" onclick="filterTasks('high',this)">High</button>
+</div>
+
+<div class="task-list" id="task-list">
+  <div class="empty-state"><i class="ti ti-checklist" style="font-size:36px;color:var(--text3);display:block;margin-bottom:10px"></i>Add your first task!</div>
+</div>
+```
+
+  </div>
+
+  <!-- HABITS -->
+
+  <div class="page" id="page-habits">
+    <div class="input-row">
+      <input class="task-input" id="habit-emoji-in" placeholder="🎯" style="width:52px;flex:none;text-align:center;padding:12px 6px">
+      <input class="task-input" id="habit-name-in" placeholder="New habit..." style="flex:1;min-width:0">
+      <button class="add-btn" onclick="addHabit()">Add</button>
+    </div>
+    <div class="section-label">Today's Check-in</div>
+    <div class="habits-grid" id="habits-grid"></div>
+  </div>
+
+  <!-- SCHEDULE -->
+
+  <div class="page" id="page-schedule">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+      <button class="topbar-btn primary" onclick="openAddEvent()"><i class="ti ti-plus"></i> Add Event</button>
+    </div>
+    <div class="day-tabs" id="day-tabs"></div>
+    <div class="time-grid" id="time-grid"></div>
+  </div>
+
+  <!-- JOURNAL -->
+
+  <div class="page" id="page-journal">
+    <div class="journal-date-lbl" id="journal-date-label"></div>
+    <input class="journal-title-input" id="journal-title" placeholder="Today's title...">
+    <textarea class="journal-textarea" id="journal-body" placeholder="Write your thoughts...&#10;&#10;What happened today? How do you feel? What are you grateful for?"></textarea>
+
+```
+<div class="mood-row">
+  <span class="mood-label">Mood:</span>
+  <button class="mood-btn" onclick="setMood(this,'😊')">😊</button>
+  <button class="mood-btn" onclick="setMood(this,'😐')">😐</button>
+  <button class="mood-btn" onclick="setMood(this,'😔')">😔</button>
+  <button class="mood-btn" onclick="setMood(this,'🔥')">🔥</button>
+  <button class="mood-btn" onclick="setMood(this,'😴')">😴</button>
+</div>
+
+<button class="save-journal-btn" id="save-journal-btn" onclick="saveJournal()">Save Entry</button>
+
+<div class="section-label">Writing Prompts</div>
+<div class="prompt-list">
+  <div class="prompt-chip" onclick="usePrompt(this)">What's one thing you're proud of today?</div>
+  <div class="prompt-chip" onclick="usePrompt(this)">What challenged you and what did you learn?</div>
+  <div class="prompt-chip" onclick="usePrompt(this)">What are you grateful for right now?</div>
+  <div class="prompt-chip" onclick="usePrompt(this)">What would make tomorrow even better?</div>
+</div>
+
+<div class="section-label">Past Entries</div>
+<div id="past-entries-list" style="display:flex;flex-direction:column;gap:6px"></div>
+```
+
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="navigate('tasks',this)" id="nav-tasks">
+    <i class="ti ti-checklist"></i>
+    Tasks
+    <span class="nav-badge" id="task-badge" style="display:none">0</span>
+  </button>
+  <button class="nav-item" onclick="navigate('habits',this)" id="nav-habits">
+    <i class="ti ti-flame"></i>
+    Habits
+  </button>
+  <button class="nav-item" onclick="navigate('schedule',this)" id="nav-schedule">
+    <i class="ti ti-calendar-event"></i>
+    Schedule
+  </button>
+  <button class="nav-item" onclick="navigate('journal',this)" id="nav-journal">
+    <i class="ti ti-notebook"></i>
+    Journal
+  </button>
+</nav>
+
+<!-- AI DRAWER -->
+
+<div class="ai-overlay" id="ai-overlay" onclick="closeAIOnBg(event)">
+  <div class="ai-drawer">
+    <div class="ai-handle"></div>
+    <div class="ai-header">
+      <div class="ai-dot"></div>
+      <span class="ai-title">AI Assistant</span>
+      <button class="ai-close" onclick="closeAI()">✕</button>
+    </div>
+    <div class="ai-messages" id="ai-messages">
+      <div class="ai-msg assistant">Hi! I'm your AI assistant. Ask me to help plan your day, suggest habits, or give journal prompts. ✦</div>
+    </div>
+    <div class="ai-input-row">
+      <input class="ai-input" id="ai-input" placeholder="Ask anything..." onkeydown="if(event.key==='Enter')sendAI()">
+      <button class="ai-send" onclick="sendAI()">Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD EVENT MODAL -->
+
+<div class="modal-overlay" id="add-event-modal">
+  <div class="modal-box">
+    <div class="modal-title">Add Event</div>
+    <div class="modal-field">
+      <label class="modal-label">Title</label>
+      <input class="modal-input" id="ev-title" placeholder="e.g. Team meeting">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Time</label>
+      <input class="modal-input" id="ev-time" type="time" value="09:00">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Duration</label>
+      <select class="modal-input" id="ev-dur">
+        <option value="30">30 min</option>
+        <option value="60" selected>1 hour</option>
+        <option value="90">1.5 hours</option>
+        <option value="120">2 hours</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeAddEvent()">Cancel</button>
+      <button class="modal-save" onclick="saveEvent()">Add</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'nexus_pwa_v1';
+const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+let state = {
+  tasks: [], habits: [], events: {}, journal: {},
+  taskFilter: 'all', activeDay: new Date().getDay()
+};
+
+function getToday() { return new Date().toISOString().slice(0,10); }
+
+function loadState() {
+  try {
+    const s = localStorage.getItem(STORAGE_KEY);
+    if (s) state = { ...state, ...JSON.parse(s) };
+  } catch(e) {}
+}
+
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+function navigate(page, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  el.classList.add('active');
+  const titles = { tasks:'Tasks', habits:'Habits', schedule:'Schedule', journal:'Journal' };
+  document.getElementById('page-title').textContent = titles[page];
+}
+
+// TASKS
+function addTask() {
+  const input = document.getElementById('task-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const priority = document.getElementById('priority-sel').value;
+  state.tasks.unshift({ id: Date.now(), text, priority, done: false });
+  input.value = '';
+  renderTasks(); saveState();
+}
+
+function toggleTask(id) {
+  const t = state.tasks.find(t => t.id === id);
+  if (t) { t.done = !t.done; renderTasks(); saveState(); }
+}
+
+function deleteTask(id) {
+  state.tasks = state.tasks.filter(t => t.id !== id);
+  renderTasks(); saveState();
+}
+
+function filterTasks(f, el) {
+  state.taskFilter = f;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderTasks();
+}
+
+function renderTasks() {
+  const list = document.getElementById('task-list');
+  let tasks = state.tasks;
+  if (state.taskFilter === 'active') tasks = tasks.filter(t => !t.done);
+  else if (state.taskFilter === 'done') tasks = tasks.filter(t => t.done);
+  else if (state.taskFilter === 'high') tasks = tasks.filter(t => t.priority === 'high');
+
+  const total = state.tasks.length;
+  const done = state.tasks.filter(t => t.done).length;
+  const high = state.tasks.filter(t => t.priority === 'high' && !t.done).length;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-done').textContent = done;
+  document.getElementById('stat-pending').textContent = total - done;
+  document.getElementById('stat-high').textContent = high;
+
+  const pending = state.tasks.filter(t => !t.done).length;
+  const badge = document.getElementById('task-badge');
+  badge.textContent = pending;
+  badge.style.display = pending > 0 ? 'block' : 'none';
+
+  if (!tasks.length) {
+    list.innerHTML = '<div class="empty-state"><i class="ti ti-checklist" style="font-size:36px;color:var(--text3);display:block;margin-bottom:10px"></i>No tasks here</div>';
+    return;
+  }
+
+  list.innerHTML = tasks.map(t => `
+    <div class="task-item">
+      <div class="task-check ${t.done?'done':''}" onclick="toggleTask(${t.id})"></div>
+      <div class="priority-dot p-${t.priority}"></div>
+      <span class="task-text ${t.done?'done':''}">${t.text}</span>
+      <button class="task-del" onclick="deleteTask(${t.id})"><i class="ti ti-x"></i></button>
+    </div>
+  `).join('');
+}
+
+// HABITS
+const defaultHabits = [
+  { id:1, name:'Exercise', emoji:'💪', streak:0, history:[] },
+  { id:2, name:'Read', emoji:'📚', streak:0, history:[] },
+  { id:3, name:'Meditate', emoji:'🧘', streak:0, history:[] },
+  { id:4, name:'Drink Water', emoji:'💧', streak:0, history:[] }
+];
+
+function addHabit() {
+  const name = document.getElementById('habit-name-in').value.trim();
+  const emoji = document.getElementById('habit-emoji-in').value.trim() || '🎯';
+  if (!name) return;
+  state.habits.push({ id: Date.now(), name, emoji, streak:0, history:[] });
+  document.getElementById('habit-name-in').value = '';
+  document.getElementById('habit-emoji-in').value = '';
+  renderHabits(); saveState();
+}
+
+function toggleHabit(id) {
+  const h = state.habits.find(h => h.id === id);
+  if (!h) return;
+  const today = getToday();
+  const idx = h.history.indexOf(today);
+  if (idx >= 0) { h.history.splice(idx,1); h.streak = Math.max(0, h.streak-1); }
+  else { h.history.push(today); h.streak++; }
+  renderHabits(); saveState();
+}
+
+function renderHabits() {
+  const grid = document.getElementById('habits-grid');
+  if (!state.habits.length) {
+    grid.innerHTML = '<div style="color:var(--text3);font-size:14px;grid-column:1/-1;padding:20px 0">Add your first habit above!</div>';
+    return;
+  }
+  const today = getToday();
+  const colors = ['var(--accent)','var(--accent2)','var(--accent3)','var(--accent4)'];
+  grid.innerHTML = state.habits.map((h,i) => {
+    const checked = h.history.includes(today);
+    const last7 = Array.from({length:7},(_,j) => {
+      const d = new Date(); d.setDate(d.getDate()-(6-j));
+      return h.history.includes(d.toISOString().slice(0,10));
+    });
+    return `<div class="habit-card ${checked?'checked':''}" style="--habit-color:${colors[i%4]}" onclick="toggleHabit(${h.id})">
+      <div class="habit-emoji">${h.emoji}</div>
+      <div class="habit-name">${h.name}</div>
+      <div class="habit-streak">Streak: <span>${h.streak}d</span></div>
+      <div class="streak-bar">${last7.map(d=>`<div class="streak-dot ${d?'done':''}"></div>`).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+// SCHEDULE
+function initSchedule() {
+  const tabs = document.getElementById('day-tabs');
+  const now = new Date();
+  tabs.innerHTML = Array.from({length:7},(_,i) => {
+    const d = new Date(now); d.setDate(d.getDate() - now.getDay() + i);
+    const label = `${days[d.getDay()]} ${d.getDate()}`;
+    return `<button class="day-tab ${i===now.getDay()?'active':''}" onclick="selectDay(${i},this)">${label}</button>`;
+  }).join('');
+  renderTimeGrid();
+}
+
+function selectDay(idx, el) {
+  state.activeDay = idx;
+  document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderTimeGrid();
+}
+
+function getDayKey(idx) {
+  const now = new Date(); const d = new Date(now);
+  d.setDate(d.getDate() - now.getDay() + idx);
+  return d.toISOString().slice(0,10);
+}
+
+function renderTimeGrid() {
+  const grid = document.getElementById('time-grid');
+  const dayKey = getDayKey(state.activeDay);
+  const evs = state.events[dayKey] || [];
+  const hours = Array.from({length:14},(_,i) => i+7);
+  grid.innerHTML = hours.map(h => {
+    const ev = evs.find(e => parseInt(e.time.split(':')[0]) === h);
+    return `<div class="time-slot">
+      <div class="time-label">${h>12?h-12:h}${h>=12?'pm':'am'}</div>
+      <div class="time-content">
+        ${ev ? `<div class="event-block" style="--event-color:${ev.color}">
+          <div class="event-title">${ev.title}</div>
+          <div class="event-time-label">${ev.time} · ${ev.dur}min</div>
+        </div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openAddEvent() { document.getElementById('add-event-modal').classList.add('open'); }
+function closeAddEvent() { document.getElementById('add-event-modal').classList.remove('open'); }
+
+function saveEvent() {
+  const title = document.getElementById('ev-title').value.trim();
+  const time = document.getElementById('ev-time').value;
+  const dur = document.getElementById('ev-dur').value;
+  if (!title) return;
+  const dayKey = getDayKey(state.activeDay);
+  if (!state.events[dayKey]) state.events[dayKey] = [];
+  const colors = ['var(--accent2)','var(--accent3)','var(--accent4)','var(--accent)'];
+  state.events[dayKey].push({ title, time, dur, color: colors[Math.floor(Math.random()*4)] });
+  document.getElementById('ev-title').value = '';
+  closeAddEvent(); renderTimeGrid(); saveState();
+}
+
+// JOURNAL
+function initJournal() {
+  const now = new Date();
+  document.getElementById('journal-date-label').textContent =
+    `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()} · ${now.getFullYear()}`;
+  const today = getToday();
+  if (state.journal[today]) {
+    document.getElementById('journal-title').value = state.journal[today].title || '';
+    document.getElementById('journal-body').value = state.journal[today].body || '';
+  }
+  renderPastEntries();
+}
+
+function setMood(el, mood) {
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  el.dataset.mood = mood;
+}
+
+function usePrompt(el) {
+  const body = document.getElementById('journal-body');
+  if (body.value && !body.value.endsWith('\n')) body.value += '\n\n';
+  body.value += el.textContent + '\n';
+  body.focus();
+}
+
+function saveJournal() {
+  const today = getToday();
+  const moodBtn = document.querySelector('.mood-btn.active');
+  state.journal[today] = {
+    title: document.getElementById('journal-title').value,
+    body: document.getElementById('journal-body').value,
+    mood: moodBtn ? moodBtn.dataset.mood : '',
+    saved: new Date().toISOString()
+  };
+  saveState(); renderPastEntries();
+  const btn = document.getElementById('save-journal-btn');
+  btn.textContent = '✓ Saved!';
+  setTimeout(() => btn.textContent = 'Save Entry', 2000);
+}
+
+function renderPastEntries() {
+  const list = document.getElementById('past-entries-list');
+  const entries = Object.entries(state.journal).sort((a,b) => b[0].localeCompare(a[0])).slice(0,5);
+  if (!entries.length) { list.innerHTML = '<div style="font-size:13px;color:var(--text3)">No entries yet</div>'; return; }
+  list.innerHTML = entries.map(([date, entry]) => {
+    const d = new Date(date);
+    return `<div class="prompt-chip" onclick="loadEntry('${date}')">
+      <div style="font-size:14px;font-weight:600">${entry.mood||''} ${entry.title||'Untitled'}</div>
+      <div style="font-size:11px;color:var(--text3);font-family:DM Mono,monospace;margin-top:3px">${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()}</div>
+    </div>`;
+  }).join('');
+}
+
+function loadEntry(date) {
+  const entry = state.journal[date];
+  if (!entry) return;
+  document.getElementById('journal-title').value = entry.title || '';
+  document.getElementById('journal-body').value = entry.body || '';
+}
+
+// AI
+function openAI() {
+  document.getElementById('ai-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('ai-input').focus(), 350);
+}
+
+function closeAI() { document.getElementById('ai-overlay').classList.remove('open'); }
+function closeAIOnBg(e) { if (e.target === document.getElementById('ai-overlay')) closeAI(); }
+
+async function sendAI() {
+  const input = document.getElementById('ai-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+
+  const msgs = document.getElementById('ai-messages');
+  msgs.innerHTML += `<div class="ai-msg user">${msg}</div>`;
+  const loading = document.createElement('div');
+  loading.className = 'ai-msg loading';
+  loading.textContent = '✦ Thinking...';
+  msgs.appendChild(loading);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  const context = `You are a smart productivity assistant in an app called NEXUS. User data:
+Tasks: ${JSON.stringify(state.tasks.slice(0,5).map(t=>({text:t.text,priority:t.priority,done:t.done})))}
+Habits: ${JSON.stringify(state.habits.map(h=>({name:h.name,streak:h.streak})))}
+Journal entries: ${Object.keys(state.journal).length}
+Be helpful, concise, friendly. Max 100 words.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 300,
+        system: context,
+        messages: [{ role:'user', content: msg }]
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.map(c=>c.text||'').join('') || 'Sorry, try again.';
+    loading.className = 'ai-msg assistant';
+    loading.textContent = reply;
+  } catch(e) {
+    loading.textContent = 'Connection error. Please try again.';
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// INIT
+loadState();
+if (!state.habits.length) state.habits = defaultHabits;
+renderTasks();
+renderHabits();
+initSchedule();
+initJournal();
+</script>
+
+</body>
+</html>
